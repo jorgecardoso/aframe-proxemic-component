@@ -1,6 +1,6 @@
 {
   "name": "aframe-proxemic-component",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Proxemic Interactions component for A-Frame.",
   "main": "index.js",
   "unpkg": "dist/aframe-proxemic-component.min.js",

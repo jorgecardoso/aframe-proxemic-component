@@ -94,7 +94,7 @@
          */
         init: function () {
             this.lastRot = new THREE.Vector3();
-            //console.log("LookAt Sensor Initialized on ", this.el);
+            
             this.triggered = false;
             this.data.xRotMin %= 360;
             this.data.xRotMin = this.data.xRotMin < 0 ? 360+this.data.xRotMin : this.data.xRotMin;
@@ -139,10 +139,6 @@
                 this.eventLeave = 'lookat-sensor-leave';
             }
 
-            console.log(this.data);
-
-            //this.el.sceneEl.addBehavior(this);
-            //this.directionVec3 = new THREE.Vector3();
         },
         tick: function() {
 

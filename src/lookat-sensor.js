@@ -22,7 +22,7 @@ AFRAME.registerComponent('lookat-sensor', {
      */
     init: function () {
         this.lastRot = new THREE.Vector3();
-        
+
         this.triggered = false;
         this.data.xRotMin %= 360;
         this.data.xRotMin = this.data.xRotMin < 0 ? 360+this.data.xRotMin : this.data.xRotMin;
