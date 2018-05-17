@@ -2,7 +2,11 @@
 /**
  * Proxemic Interactions component for A-Frame.
  */
-AFRAME.registerComponent('lookat-sensor', {
+
+const EVENT_NAME_ENTER = 'compass-sensor-enter';
+const EVENT_NAME_LEAVE = 'compass-sensor-leave';
+
+AFRAME.registerComponent('compass-sensor', {
     schema: {
         xRotMin: {default: 0},
         yRotMin: {default: 0},
@@ -60,11 +64,11 @@ AFRAME.registerComponent('lookat-sensor', {
         }
 
         if (this.id !== undefined) {
-            this.eventEnter = 'lookat-sensor-enter__'+this.id;
-            this.eventLeave = 'lookat-sensor-leave__'+this.id;
+            this.eventEnter = EVENT_NAME_ENTER+'__'+this.id;
+            this.eventLeave = EVENT_NAME_LEAVE+'__'+this.id;
         } else {
-            this.eventEnter = 'lookat-sensor-enter';
-            this.eventLeave = 'lookat-sensor-leave';
+            this.eventEnter = EVENT_NAME_ENTER;
+            this.eventLeave = EVENT_NAME_LEAVE;
         }
 
     },
@@ -91,7 +95,7 @@ AFRAME.registerComponent('lookat-sensor', {
 
 
             this.el.emit(this.eventEnter);
-            console.log('Player looked: ' + this.eventEnter);
+            console.log('Compass enter: ' + this.eventEnter);
             this.triggered = true;
 
         } else if (this.triggered
@@ -100,7 +104,7 @@ AFRAME.registerComponent('lookat-sensor', {
             || zDeg < this.data.zRotMin || zDeg > this.data.zRotMax) ){
 
             this.el.emit(this.eventLeave);
-            console.log('Player looked away: ' + this.eventLeave);
+            console.log('Compass leave: ' + this.eventLeave);
             this.triggered = false;
         }
     },

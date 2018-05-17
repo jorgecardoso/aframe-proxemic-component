@@ -15,10 +15,10 @@
     <a-entity environment="preset: goldmine; dressing: mushrooms; dressingAmount: 20; dressingColor: orange; dressingScale: 1"></a-entity>
 
     <a-box id="one" color="red" position="0 1.6 -4"></a-box>
-    <a-camera lookat-sensor__1="xRotMin:10; xRotMax: 45; yRotMin: 0; yRotMax: 40"
-              lookat-sensor__2="xRotMin:10; xRotMax: 45; yRotMin: -40; yRotMax: -5"
-              event-set__1="_event: lookat-sensor-enter__1; _target:#one; color:blue"
-              event-set__2="_event: lookat-sensor-enter__2; _target:#one; color:yellow"
+    <a-camera compass-sensor__1="xRotMin:10; xRotMax: 45; yRotMin: 0; yRotMax: 40"
+              compass-sensor__2="xRotMin:10; xRotMax: 45; yRotMin: -40; yRotMax: -5"
+              event-set__1="_event: compass-sensor-enter__1; _target:#one; color:blue"
+              event-set__2="_event: compass-sensor-enter__2; _target:#one; color:yellow"
     >
         <a-cursor></a-cursor>
     </a-camera>
