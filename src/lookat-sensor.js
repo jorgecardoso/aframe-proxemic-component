@@ -4,50 +4,103 @@
  */
 AFRAME.registerComponent('lookat-sensor', {
     schema: {
-        xRotMin: {default: -1},
-        yRotMin: {default: -1},
-        zRotMin: {default: -1},
-        xRotMax: {default: 361},
-        yRotMax: {default: 361},
-        zRotMax: {default: 361},
+        xRotMin: {default: 0},
+        yRotMin: {default: 0},
+        zRotMin: {default: 0},
+        xRotMax: {default: 359.99},
+        yRotMax: {default: 359.99},
+        zRotMax: {default: 359.99},
         },
 
     /**
      * Set if component needs multiple instancing.
      */
-    multiple: false,
+    multiple: true,
 
     /**
      * Called once when component is attached. Generally for initial setup.
      */
     init: function () {
-        //console.log("LookAt Sensor Initialized on ", this.el);
+        this.lastRot = new THREE.Vector3();
+        
         this.triggered = false;
-        //this.el.sceneEl.addBehavior(this);
-        //this.directionVec3 = new THREE.Vector3();
+        this.data.xRotMin %= 360;
+        this.data.xRotMin = this.data.xRotMin < 0 ? 360+this.data.xRotMin : this.data.xRotMin;
+
+        this.data.yRotMin %= 360;
+        this.data.yRotMin = this.data.yRotMin < 0 ? 360+this.data.yRotMin : this.data.yRotMin;
+
+        this.data.zRotMin %= 360;
+        this.data.zRotMin = this.data.zRotMin < 0 ? 360+this.data.zRotMin : this.data.zRotMin;
+
+
+        this.data.xRotMax %= 360;
+        this.data.xRotMax = this.data.xRotMax < 0 ? 360+this.data.xRotMax : this.data.xRotMax;
+
+        this.data.yRotMax %= 360;
+        this.data.yRotMax = this.data.yRotMax < 0 ? 360+this.data.yRotMax : this.data.yRotMax;
+
+        this.data.zRotMax %= 360;
+        this.data.zRotMax = this.data.zRotMax < 0 ? (360+this.data.zRotMax) : this.data.zRotMax;
+
+        if (this.data.xRotMin > this.data.xRotMax) {
+            let temp = this.data.xRotMin;
+            this.data.xRotMin = this.data.xRotMax;
+            this.data.xRotMax = temp;
+        }
+        if (this.data.yRotMin > this.data.yRotMax) {
+            let temp = this.data.yRotMin;
+            this.data.yRotMin = this.data.yRotMax;
+            this.data.yRotMax = temp;
+        }
+        if (this.data.zRotMin > this.data.zRotMax) {
+            let temp = this.data.zRotMin;
+            this.data.zRotMin = this.data.zRotMax;
+            this.data.zRotMax = temp;
+        }
+
+        if (this.id !== undefined) {
+            this.eventEnter = 'lookat-sensor-enter__'+this.id;
+            this.eventLeave = 'lookat-sensor-leave__'+this.id;
+        } else {
+            this.eventEnter = 'lookat-sensor-enter';
+            this.eventLeave = 'lookat-sensor-leave';
+        }
+
     },
     tick: function() {
 
         //var thisRot = this.el.object3D.rotation;
-        var xDeg = THREE.Math.radToDeg( this.el.object3D.rotation.x )%360;
-        var yDeg = THREE.Math.radToDeg( this.el.object3D.rotation.y )%360;
-        var zDeg = THREE.Math.radToDeg( this.el.object3D.rotation.z )%360;
+        var xDeg = THREE.Math.radToDeg( this.el.object3D.rotation.x ) % 360;
+        xDeg = xDeg < 0 ? 360+xDeg : xDeg;
+        var yDeg = THREE.Math.radToDeg( this.el.object3D.rotation.y ) % 360;
+        yDeg = yDeg < 0 ? 360+yDeg : yDeg;
+        var zDeg = THREE.Math.radToDeg( this.el.object3D.rotation.z ) % 360;
+        zDeg = zDeg < 0 ? 360+zDeg : zDeg;
 
-       // console.log(xDeg, yDeg, zDeg);
+        /*
+        if (!this.lastRot.equals(this.el.object3D.rotation)) {
+            console.log(xDeg, yDeg, zDeg);
+        }
+        this.lastRot.copy(this.el.object3D.rotation);
+        */
         if (!this.triggered
-            && xDeg > this.data.xRotMin && xDeg < this.data.xRotMax
-            && yDeg > this.data.yRotMin && yDeg < this.data.yRotMax
-            && zDeg > this.data.zRotMin && zDeg < this.data.zRotMax ) {
-            this.el.emit('lookat-sensor-enter');
-            console.log('Player looked ');
+            && xDeg >= this.data.xRotMin && xDeg <= this.data.xRotMax
+            && yDeg >= this.data.yRotMin && yDeg <= this.data.yRotMax
+            && zDeg >= this.data.zRotMin && zDeg <= this.data.zRotMax ) {
+
+
+            this.el.emit(this.eventEnter);
+            console.log('Player looked: ' + this.eventEnter);
             this.triggered = true;
+
         } else if (this.triggered
             && (xDeg < this.data.xRotMin || xDeg > this.data.xRotMax
             || yDeg < this.data.yRotMin || yDeg > this.data.yRotMax
             || zDeg < this.data.zRotMin || zDeg > this.data.zRotMax) ){
 
-            this.el.emit('lookat-sensor-leave');
-            console.log('Player looked away');
+            this.el.emit(this.eventLeave);
+            console.log('Player looked away: ' + this.eventLeave);
             this.triggered = false;
         }
     },
