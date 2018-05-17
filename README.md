@@ -1,4 +1,4 @@
-## aframe-proxemic-component
+## A-Frame Proxemics Interactions component
 
 [![Version](http://img.shields.io/npm/v/aframe-proxemic-component.svg?style=flat-square)](https://npmjs.org/package/aframe-proxemic-component)
 [![License](http://img.shields.io/npm/l/aframe-proxemic-component.svg?style=flat-square)](https://npmjs.org/package/aframe-proxemic-component)
@@ -47,3 +47,6 @@ Then require and use.
 require('aframe');
 require('aframe-proxemic-component');
 ```
+=======
+
+
