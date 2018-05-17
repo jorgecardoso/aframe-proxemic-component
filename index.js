@@ -6,3 +6,4 @@ if (typeof AFRAME === 'undefined') {
 console.log("A-Frame Proxemic Component");
 
 import  "./src/proximity-sensor.js";
+import  "./src/lookat-sensor.js";

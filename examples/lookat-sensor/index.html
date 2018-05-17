@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactions - Cursor</title>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
+    <script src="../../dist/aframe-proxemic-component.js"></script>
+</head>
+<body>
+
+<a-scene background="color:lightblue">
+
+    <a-entity environment="preset: goldmine; dressing: mushrooms; dressingAmount: 20; dressingColor: orange; dressingScale: 1"></a-entity>
+
+    <a-camera lookat-sensor="xRotMin:10; xRotMax: 45; yRotMin: 10; yRotMax: 20">
+        <a-cursor></a-cursor>
+    </a-camera>
+
+</a-scene>
+
+</body>
+</html>
+
