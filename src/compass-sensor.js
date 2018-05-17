@@ -105,8 +105,8 @@ AFRAME.registerComponent('compass-sensor', {
         }
 
         if (this.id !== undefined) {
-            this.eventEnter = EVENT_NAME_ENTER + '__' + this.id;
-            this.eventLeave = EVENT_NAME_LEAVE + '__' + this.id;
+            this.eventEnter = EVENT_NAME_ENTER + '-' + this.id;
+            this.eventLeave = EVENT_NAME_LEAVE + '-' + this.id;
         } else {
             this.eventEnter = EVENT_NAME_ENTER;
             this.eventLeave = EVENT_NAME_LEAVE;
