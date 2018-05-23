@@ -7,12 +7,12 @@ const EVENT_NAME_LEAVE = 'compass-sensor-leave';
 
 AFRAME.registerComponent('compass-sensor', {
     schema: {
-        xRotMin: {default: 0},
-        yRotMin: {default: 0},
-        zRotMin: {default: 0},
-        xRotMax: {default: 359.99},
-        yRotMax: {default: 359.99},
-        zRotMax: {default: 359.99},
+        xRotMin: {type: 'number', default: -Infinity},
+        yRotMin: {type: 'number', default: -Infinity},
+        zRotMin: {type: 'number', default: -Infinity},
+        xRotMax: {type: 'number', default: Infinity},
+        yRotMax: {type: 'number', default: Infinity},
+        zRotMax: {type: 'number', default: Infinity},
     },
 
     /**
@@ -69,24 +69,36 @@ AFRAME.registerComponent('compass-sensor', {
         this.lastRot = new THREE.Vector3();
 
         this.triggered = false;
-        this.data.xRotMin %= 360;
-        this.data.xRotMin = this.data.xRotMin < 0 ? 360 + this.data.xRotMin : this.data.xRotMin;
 
-        this.data.yRotMin %= 360;
-        this.data.yRotMin = this.data.yRotMin < 0 ? 360 + this.data.yRotMin : this.data.yRotMin;
+        if (Math.abs(this.data.xRotMin) !== Infinity) {
+            this.data.xRotMin %= 360;
+            this.data.xRotMin = this.data.xRotMin < 0 ? 360 + this.data.xRotMin : this.data.xRotMin;
+        }
 
-        this.data.zRotMin %= 360;
-        this.data.zRotMin = this.data.zRotMin < 0 ? 360 + this.data.zRotMin : this.data.zRotMin;
+        if (Math.abs(this.data.yRotMin) !== Infinity) {
+            this.data.yRotMin %= 360;
+            this.data.yRotMin = this.data.yRotMin < 0 ? 360 + this.data.yRotMin : this.data.yRotMin;
+        }
 
+        if (Math.abs(this.data.zRotMin) !== Infinity) {
+            this.data.zRotMin %= 360;
+            this.data.zRotMin = this.data.zRotMin < 0 ? 360 + this.data.zRotMin : this.data.zRotMin;
+        }
 
-        this.data.xRotMax %= 360;
-        this.data.xRotMax = this.data.xRotMax < 0 ? 360 + this.data.xRotMax : this.data.xRotMax;
+        if (Math.abs(this.data.xRotMax) !== Infinity) {
+            this.data.xRotMax %= 360;
+            this.data.xRotMax = this.data.xRotMax < 0 ? 360 + this.data.xRotMax : this.data.xRotMax;
+        }
 
-        this.data.yRotMax %= 360;
-        this.data.yRotMax = this.data.yRotMax < 0 ? 360 + this.data.yRotMax : this.data.yRotMax;
+        if (Math.abs(this.data.yRotMax) !== Infinity) {
+            this.data.yRotMax %= 360;
+            this.data.yRotMax = this.data.yRotMax < 0 ? 360 + this.data.yRotMax : this.data.yRotMax;
+        }
 
-        this.data.zRotMax %= 360;
-        this.data.zRotMax = this.data.zRotMax < 0 ? (360 + this.data.zRotMax) : this.data.zRotMax;
+        if (Math.abs(this.data.zRotMax) !== Infinity) {
+            this.data.zRotMax %= 360;
+            this.data.zRotMax = this.data.zRotMax < 0 ? (360 + this.data.zRotMax) : this.data.zRotMax;
+        }
 
         if (this.data.xRotMin > this.data.xRotMax) {
             let temp = this.data.xRotMin;
@@ -111,6 +123,8 @@ AFRAME.registerComponent('compass-sensor', {
             this.eventEnter = EVENT_NAME_ENTER;
             this.eventLeave = EVENT_NAME_LEAVE;
         }
+
+       // console.log(this.data);
     },
 
     /**

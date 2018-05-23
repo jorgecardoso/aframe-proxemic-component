@@ -1,6 +1,6 @@
 {
   "name": "aframe-proxemic-component",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A Proxemic Interactions component for A-Frame.",
   "main": "index.js",
   "unpkg": "dist/aframe-proxemic-component.min.js",
@@ -29,7 +29,7 @@
     "webvr",
     "proxemic"
   ],
-  "author": "Jorge Cardoso <jorgecardoso@ieee.org>",
+  "author": "Jorge C. S. Cardoso <jorgecardoso@ieee.org>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jorgecardoso/aframe-proxemic-component/issues"
