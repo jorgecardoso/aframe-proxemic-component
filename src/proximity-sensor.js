@@ -4,8 +4,8 @@
  */
 AFRAME.registerComponent('proximity-sensor', {
     schema: {
-        distance: {default: 1, min: 0},
-        target: {default: 'a-camera'}
+        distance: {type:'number', default: 1, min: 0},
+        target: {type:'selector', default: 'a-camera'}
         },
 
     /**
@@ -17,23 +17,27 @@ AFRAME.registerComponent('proximity-sensor', {
      * Called once when component is attached. Generally for initial setup.
      */
     init: function () {
-        this.triggered = false;
+        this._triggered = false;
         this.el.sceneEl.addBehavior(this);
-        console.log("Proximity Sensor.");
+        this._target = this.data.target;
+
+        console.info("A-Frame Proximity Sensor.");
+        console.log("Detecting proximity (distance threshold: ", this.data.distance, ") between ", this.el, " and ", this.data.target);
     },
     tick: function() {
-        var target = this.el.sceneEl.querySelector(this.data.target);
-        var targetPos = target.object3D.position;
+        //var target = this.el.sceneEl.querySelector(this.data.target);
+        let targetPos = this._target.object3D.position;
         //console.log(targetPos);
-        var thisPos = this.el.object3D.position;
-        if (!this.triggered && thisPos.distanceTo(targetPos) < this.data.distance) {
-            this.triggered = true;
-            this.el.emit('playerenter');
-            console.log('Player entered checkpoint');
-        } else if (this.triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {
-            this.triggered = false;
-            this.el.emit('playerleave');
-            console.log('Player left checkpoint');
+        let thisPos = this.el.object3D.position;
+        if (!this._triggered && thisPos.distanceTo(targetPos) < this.data.distance) {
+            this._triggered = true;
+            console.info('Emitting "enter" event');
+            this.el.emit('enter');
+        } else if (this._triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {
+            this._triggered = false;
+            console.info('Emitting "exit" event');
+            this.el.emit('exit');
+
         }
     },
     /**

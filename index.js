@@ -5,5 +5,5 @@ if (typeof AFRAME === 'undefined') {
 }
 console.log("A-Frame Proxemic Component v0.0.9");
 
-import  "./src/proximity-sensor.js";
-import "./src/compass-sensor.js";
+require("./src/proximity-sensor.js")
+require( "./src/compass-sensor.js")

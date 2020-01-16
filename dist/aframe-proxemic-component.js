@@ -1,237 +1,133 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (factory());
-}(this, (function () { 'use strict';
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
 
-    /**
-     * Proxemic Interactions component for A-Frame.
-     */
-    AFRAME.registerComponent('proximity-sensor', {
-        schema: {
-            distance: {default: 1, min: 0},
-            target: {default: 'a-camera'}
-            },
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-        /**
-         * Set if component needs multiple instancing.
-         */
-        multiple: false,
+eval("/* global AFRAME */\nif (typeof AFRAME === 'undefined') {\n  throw new Error('Component attempted to register before AFRAME was available.');\n}\n\nconsole.log(\"A-Frame Proxemic Component v0.0.9\");\n\n__webpack_require__(/*! ./src/proximity-sensor.js */ \"./src/proximity-sensor.js\");\n\n__webpack_require__(/*! ./src/compass-sensor.js */ \"./src/compass-sensor.js\");\n\n//# sourceURL=webpack:///./index.js?");
 
-        /**
-         * Called once when component is attached. Generally for initial setup.
-         */
-        init: function () {
-            this.triggered = false;
-            this.el.sceneEl.addBehavior(this);
-            console.log("Proximity Sensor.");
-        },
-        tick: function() {
-            var target = this.el.sceneEl.querySelector(this.data.target);
-            var targetPos = target.object3D.position;
-            //console.log(targetPos);
-            var thisPos = this.el.object3D.position;
-            if (!this.triggered && thisPos.distanceTo(targetPos) < this.data.distance) {
-                this.triggered = true;
-                this.el.emit('playerenter');
-                console.log('Player entered checkpoint');
-            } else if (this.triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {
-                this.triggered = false;
-                this.el.emit('playerleave');
-                console.log('Player left checkpoint');
-            }
-        },
-        /**
-         * Called when component is attached and when component data changes.
-         * Generally modifies the entity based on the data.
-         */
-        update: function (oldData) { },
+/***/ }),
 
-        /**
-         * Called when a component is removed (e.g., via removeAttribute).
-         * Generally undoes all modifications to the entity.
-         */
-        remove: function () { },
+/***/ "./src/compass-sensor.js":
+/*!*******************************!*\
+  !*** ./src/compass-sensor.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-        /**
-         * Called on each scene tick.
-         */
-        // tick: function (t) { },
+eval("/**\r\n * Proxemic Interactions component for A-Frame.\r\n */\nconst EVENT_NAME_ENTER = 'compass-sensor-enter';\nconst EVENT_NAME_LEAVE = 'compass-sensor-leave';\nAFRAME.registerComponent('compass-sensor', {\n  schema: {\n    xRotMin: {\n      type: 'number',\n      default: -Infinity\n    },\n    yRotMin: {\n      type: 'number',\n      default: -Infinity\n    },\n    zRotMin: {\n      type: 'number',\n      default: -Infinity\n    },\n    xRotMax: {\n      type: 'number',\n      default: Infinity\n    },\n    yRotMax: {\n      type: 'number',\n      default: Infinity\n    },\n    zRotMax: {\n      type: 'number',\n      default: Infinity\n    }\n  },\n\n  /**\r\n   * Set if component needs multiple instancing.\r\n   */\n  multiple: true,\n\n  /**\r\n   * Called once when component is attached. Generally for initial setup.\r\n   */\n  init: function () {},\n  tick: function () {\n    //var thisRot = this.el.object3D.rotation;\n    var xDeg = THREE.Math.radToDeg(this.el.object3D.rotation.x) % 360;\n    xDeg = xDeg < 0 ? 360 + xDeg : xDeg;\n    var yDeg = THREE.Math.radToDeg(this.el.object3D.rotation.y) % 360;\n    yDeg = yDeg < 0 ? 360 + yDeg : yDeg;\n    var zDeg = THREE.Math.radToDeg(this.el.object3D.rotation.z) % 360;\n    zDeg = zDeg < 0 ? 360 + zDeg : zDeg;\n    /*\r\n    if (!this.lastRot.equals(this.el.object3D.rotation)) {\r\n        console.log(xDeg, yDeg, zDeg);\r\n    }\r\n    this.lastRot.copy(this.el.object3D.rotation);\r\n    */\n\n    if (!this.triggered && xDeg >= this.data.xRotMin && xDeg <= this.data.xRotMax && yDeg >= this.data.yRotMin && yDeg <= this.data.yRotMax && zDeg >= this.data.zRotMin && zDeg <= this.data.zRotMax) {\n      this.el.emit(this.eventEnter);\n      console.log('Compass enter: ' + this.eventEnter);\n      this.triggered = true;\n    } else if (this.triggered && (xDeg < this.data.xRotMin || xDeg > this.data.xRotMax || yDeg < this.data.yRotMin || yDeg > this.data.yRotMax || zDeg < this.data.zRotMin || zDeg > this.data.zRotMax)) {\n      this.el.emit(this.eventLeave);\n      console.log('Compass leave: ' + this.eventLeave);\n      this.triggered = false;\n    }\n  },\n\n  /**\r\n   * Called when component is attached and when component data changes.\r\n   * Generally modifies the entity based on the data.\r\n   */\n  update: function (oldData) {\n    this.lastRot = new THREE.Vector3();\n    this.triggered = false;\n\n    if (Math.abs(this.data.xRotMin) !== Infinity) {\n      this.data.xRotMin %= 360;\n      this.data.xRotMin = this.data.xRotMin < 0 ? 360 + this.data.xRotMin : this.data.xRotMin;\n    }\n\n    if (Math.abs(this.data.yRotMin) !== Infinity) {\n      this.data.yRotMin %= 360;\n      this.data.yRotMin = this.data.yRotMin < 0 ? 360 + this.data.yRotMin : this.data.yRotMin;\n    }\n\n    if (Math.abs(this.data.zRotMin) !== Infinity) {\n      this.data.zRotMin %= 360;\n      this.data.zRotMin = this.data.zRotMin < 0 ? 360 + this.data.zRotMin : this.data.zRotMin;\n    }\n\n    if (Math.abs(this.data.xRotMax) !== Infinity) {\n      this.data.xRotMax %= 360;\n      this.data.xRotMax = this.data.xRotMax < 0 ? 360 + this.data.xRotMax : this.data.xRotMax;\n    }\n\n    if (Math.abs(this.data.yRotMax) !== Infinity) {\n      this.data.yRotMax %= 360;\n      this.data.yRotMax = this.data.yRotMax < 0 ? 360 + this.data.yRotMax : this.data.yRotMax;\n    }\n\n    if (Math.abs(this.data.zRotMax) !== Infinity) {\n      this.data.zRotMax %= 360;\n      this.data.zRotMax = this.data.zRotMax < 0 ? 360 + this.data.zRotMax : this.data.zRotMax;\n    }\n\n    if (this.data.xRotMin > this.data.xRotMax) {\n      let temp = this.data.xRotMin;\n      this.data.xRotMin = this.data.xRotMax;\n      this.data.xRotMax = temp;\n    }\n\n    if (this.data.yRotMin > this.data.yRotMax) {\n      let temp = this.data.yRotMin;\n      this.data.yRotMin = this.data.yRotMax;\n      this.data.yRotMax = temp;\n    }\n\n    if (this.data.zRotMin > this.data.zRotMax) {\n      let temp = this.data.zRotMin;\n      this.data.zRotMin = this.data.zRotMax;\n      this.data.zRotMax = temp;\n    }\n\n    if (this.id !== undefined) {\n      this.eventEnter = EVENT_NAME_ENTER + '-' + this.id;\n      this.eventLeave = EVENT_NAME_LEAVE + '-' + this.id;\n    } else {\n      this.eventEnter = EVENT_NAME_ENTER;\n      this.eventLeave = EVENT_NAME_LEAVE;\n    } // console.log(this.data);\n\n  },\n\n  /**\r\n   * Called when a component is removed (e.g., via removeAttribute).\r\n   * Generally undoes all modifications to the entity.\r\n   */\n  remove: function () {},\n\n  /**\r\n   * Called on each scene tick.\r\n   */\n  // tick: function (t) { },\n\n  /**\r\n   * Called when entity pauses.\r\n   * Use to stop or remove any dynamic or background behavior such as events.\r\n   */\n  pause: function () {},\n\n  /**\r\n   * Called when entity resumes.\r\n   * Use to continue or add any dynamic or background behavior such as events.\r\n   */\n  play: function () {}\n});\n\n//# sourceURL=webpack:///./src/compass-sensor.js?");
 
-        /**
-         * Called when entity pauses.
-         * Use to stop or remove any dynamic or background behavior such as events.
-         */
-        pause: function () { },
+/***/ }),
 
-        /**
-         * Called when entity resumes.
-         * Use to continue or add any dynamic or background behavior such as events.
-         */
-        play: function () { }
-    });
+/***/ "./src/proximity-sensor.js":
+/*!*********************************!*\
+  !*** ./src/proximity-sensor.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-    /**
-     * Proxemic Interactions component for A-Frame.
-     */
+eval("/**\r\n * Proxemic Interactions component for A-Frame.\r\n */\nAFRAME.registerComponent('proximity-sensor', {\n  schema: {\n    distance: {\n      type: 'number',\n      default: 1,\n      min: 0\n    },\n    target: {\n      type: 'selector',\n      default: 'a-camera'\n    }\n  },\n\n  /**\r\n   * Set if component needs multiple instancing.\r\n   */\n  multiple: false,\n\n  /**\r\n   * Called once when component is attached. Generally for initial setup.\r\n   */\n  init: function () {\n    this._triggered = false;\n    this.el.sceneEl.addBehavior(this);\n    this._target = this.data.target;\n    console.info(\"A-Frame Proximity Sensor.\");\n    console.log(\"Detecting proximity (distance threshold: \", this.data.distance, \") between \", this.el, \" and \", this.data.target);\n  },\n  tick: function () {\n    //var target = this.el.sceneEl.querySelector(this.data.target);\n    let targetPos = this._target.object3D.position; //console.log(targetPos);\n\n    let thisPos = this.el.object3D.position;\n\n    if (!this._triggered && thisPos.distanceTo(targetPos) < this.data.distance) {\n      this._triggered = true;\n      console.info('Emitting \"enter\" event');\n      this.el.emit('enter');\n    } else if (this._triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {\n      this._triggered = false;\n      console.info('Emitting \"exit\" event');\n      this.el.emit('exit');\n    }\n  },\n\n  /**\r\n   * Called when component is attached and when component data changes.\r\n   * Generally modifies the entity based on the data.\r\n   */\n  update: function (oldData) {},\n\n  /**\r\n   * Called when a component is removed (e.g., via removeAttribute).\r\n   * Generally undoes all modifications to the entity.\r\n   */\n  remove: function () {},\n\n  /**\r\n   * Called on each scene tick.\r\n   */\n  // tick: function (t) { },\n\n  /**\r\n   * Called when entity pauses.\r\n   * Use to stop or remove any dynamic or background behavior such as events.\r\n   */\n  pause: function () {},\n\n  /**\r\n   * Called when entity resumes.\r\n   * Use to continue or add any dynamic or background behavior such as events.\r\n   */\n  play: function () {}\n});\n\n//# sourceURL=webpack:///./src/proximity-sensor.js?");
 
-    const EVENT_NAME_ENTER = 'compass-sensor-enter';
-    const EVENT_NAME_LEAVE = 'compass-sensor-leave';
+/***/ })
 
-    AFRAME.registerComponent('compass-sensor', {
-        schema: {
-            xRotMin: {type: 'number', default: -Infinity},
-            yRotMin: {type: 'number', default: -Infinity},
-            zRotMin: {type: 'number', default: -Infinity},
-            xRotMax: {type: 'number', default: Infinity},
-            yRotMax: {type: 'number', default: Infinity},
-            zRotMax: {type: 'number', default: Infinity},
-        },
-
-        /**
-         * Set if component needs multiple instancing.
-         */
-        multiple: true,
-
-        /**
-         * Called once when component is attached. Generally for initial setup.
-         */
-        init: function () {
-        },
-        tick: function () {
-
-            //var thisRot = this.el.object3D.rotation;
-            var xDeg = THREE.Math.radToDeg(this.el.object3D.rotation.x) % 360;
-            xDeg = xDeg < 0 ? 360 + xDeg : xDeg;
-            var yDeg = THREE.Math.radToDeg(this.el.object3D.rotation.y) % 360;
-            yDeg = yDeg < 0 ? 360 + yDeg : yDeg;
-            var zDeg = THREE.Math.radToDeg(this.el.object3D.rotation.z) % 360;
-            zDeg = zDeg < 0 ? 360 + zDeg : zDeg;
-
-            /*
-            if (!this.lastRot.equals(this.el.object3D.rotation)) {
-                console.log(xDeg, yDeg, zDeg);
-            }
-            this.lastRot.copy(this.el.object3D.rotation);
-            */
-            if (!this.triggered
-                && xDeg >= this.data.xRotMin && xDeg <= this.data.xRotMax
-                && yDeg >= this.data.yRotMin && yDeg <= this.data.yRotMax
-                && zDeg >= this.data.zRotMin && zDeg <= this.data.zRotMax) {
-
-
-                this.el.emit(this.eventEnter);
-                console.log('Compass enter: ' + this.eventEnter);
-                this.triggered = true;
-
-            } else if (this.triggered
-                && (xDeg < this.data.xRotMin || xDeg > this.data.xRotMax
-                    || yDeg < this.data.yRotMin || yDeg > this.data.yRotMax
-                    || zDeg < this.data.zRotMin || zDeg > this.data.zRotMax)) {
-
-                this.el.emit(this.eventLeave);
-                console.log('Compass leave: ' + this.eventLeave);
-                this.triggered = false;
-            }
-        },
-        /**
-         * Called when component is attached and when component data changes.
-         * Generally modifies the entity based on the data.
-         */
-        update: function (oldData) {
-            this.lastRot = new THREE.Vector3();
-
-            this.triggered = false;
-
-            if (Math.abs(this.data.xRotMin) !== Infinity) {
-                this.data.xRotMin %= 360;
-                this.data.xRotMin = this.data.xRotMin < 0 ? 360 + this.data.xRotMin : this.data.xRotMin;
-            }
-
-            if (Math.abs(this.data.yRotMin) !== Infinity) {
-                this.data.yRotMin %= 360;
-                this.data.yRotMin = this.data.yRotMin < 0 ? 360 + this.data.yRotMin : this.data.yRotMin;
-            }
-
-            if (Math.abs(this.data.zRotMin) !== Infinity) {
-                this.data.zRotMin %= 360;
-                this.data.zRotMin = this.data.zRotMin < 0 ? 360 + this.data.zRotMin : this.data.zRotMin;
-            }
-
-            if (Math.abs(this.data.xRotMax) !== Infinity) {
-                this.data.xRotMax %= 360;
-                this.data.xRotMax = this.data.xRotMax < 0 ? 360 + this.data.xRotMax : this.data.xRotMax;
-            }
-
-            if (Math.abs(this.data.yRotMax) !== Infinity) {
-                this.data.yRotMax %= 360;
-                this.data.yRotMax = this.data.yRotMax < 0 ? 360 + this.data.yRotMax : this.data.yRotMax;
-            }
-
-            if (Math.abs(this.data.zRotMax) !== Infinity) {
-                this.data.zRotMax %= 360;
-                this.data.zRotMax = this.data.zRotMax < 0 ? (360 + this.data.zRotMax) : this.data.zRotMax;
-            }
-
-            if (this.data.xRotMin > this.data.xRotMax) {
-                let temp = this.data.xRotMin;
-                this.data.xRotMin = this.data.xRotMax;
-                this.data.xRotMax = temp;
-            }
-            if (this.data.yRotMin > this.data.yRotMax) {
-                let temp = this.data.yRotMin;
-                this.data.yRotMin = this.data.yRotMax;
-                this.data.yRotMax = temp;
-            }
-            if (this.data.zRotMin > this.data.zRotMax) {
-                let temp = this.data.zRotMin;
-                this.data.zRotMin = this.data.zRotMax;
-                this.data.zRotMax = temp;
-            }
-
-            if (this.id !== undefined) {
-                this.eventEnter = EVENT_NAME_ENTER + '-' + this.id;
-                this.eventLeave = EVENT_NAME_LEAVE + '-' + this.id;
-            } else {
-                this.eventEnter = EVENT_NAME_ENTER;
-                this.eventLeave = EVENT_NAME_LEAVE;
-            }
-
-           // console.log(this.data);
-        },
-
-        /**
-         * Called when a component is removed (e.g., via removeAttribute).
-         * Generally undoes all modifications to the entity.
-         */
-        remove: function () {
-        },
-
-        /**
-         * Called on each scene tick.
-         */
-        // tick: function (t) { },
-
-        /**
-         * Called when entity pauses.
-         * Use to stop or remove any dynamic or background behavior such as events.
-         */
-        pause: function () {
-        },
-
-        /**
-         * Called when entity resumes.
-         * Use to continue or add any dynamic or background behavior such as events.
-         */
-        play: function () {
-        }
-    });
-
-    /* global AFRAME */
-
-    if (typeof AFRAME === 'undefined') {
-      throw new Error('Component attempted to register before AFRAME was available.');
-    }
-    console.log("A-Frame Proxemic Component v0.0.9");
-
-})));
+/******/ });
+});
