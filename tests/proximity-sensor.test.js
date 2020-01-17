@@ -10,11 +10,12 @@ suite('proximity-sensor component', function () {
 
   setup(function (done) {
     el = entityFactory();
-    camera = document.createElement("a-camera");
-    el.sceneEl.appendChild(camera);
+    //camera = document.createElement("a-camera");
+    //el.sceneEl.appendChild(camera);
     el.addEventListener('componentinitialized', function (evt) {
       if (evt.detail.name !== 'proximity-sensor') { return; }
       component = el.components['proximity-sensor'];
+      camera = document.querySelector("[camera]");
       done();
     });
     el.setAttribute('proximity-sensor', {});
@@ -23,7 +24,6 @@ suite('proximity-sensor component', function () {
 
   suite('defaults', function () {
     test('default target', function () {
-
       assert.equal(camera, component._target);
     });
 
@@ -34,7 +34,7 @@ suite('proximity-sensor component', function () {
 
   suite('enter event', function () {
     test('emits enter event', function (done) {
-      component.el.addEventListener("enter", function() {
+      component.el.addEventListener("proximityenter", function() {
         done();
       });
       component.el.setAttribute("position", camera.getAttribute("position"));
@@ -43,7 +43,7 @@ suite('proximity-sensor component', function () {
 
     test('emits enter event once', function (done) {
       let count = 0;
-      component.el.addEventListener("enter", function() {
+      component.el.addEventListener("proximityenter", function() {
         count++;
       });
       component.el.setAttribute("position", camera.getAttribute("position"));
@@ -57,8 +57,8 @@ suite('proximity-sensor component', function () {
   suite('enter event', function () {
 
     test('emits exit event', function (done) {
-      component.el.addEventListener("enter", function() {
-        component.el.addEventListener("exit", function() {
+      component.el.addEventListener("proximityenter", function() {
+        component.el.addEventListener("proximityexit", function() {
           done();
         });
         component.el.setAttribute("position", "1000, 1000, 1000");
@@ -71,8 +71,8 @@ suite('proximity-sensor component', function () {
 
     test('emits exit event once', function (done) {
       let count = 0;
-      component.el.addEventListener("enter", function() {
-        component.el.addEventListener("exit", function() {
+      component.el.addEventListener("proximityenter", function() {
+        component.el.addEventListener("proximityexit", function() {
           count++;
         });
         component.el.setAttribute("position", "1000, 1000, 1000");
