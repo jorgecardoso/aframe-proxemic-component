@@ -17,36 +17,39 @@ AFRAME.registerComponent('proximity-sensor', {
      * Called once when component is attached. Generally for initial setup.
      */
     init: function () {
-        this._triggered = false;
         this.el.sceneEl.addBehavior(this);
-        this._target = this.data.target;
-
-        //console.log(this.el.sceneEl.camera);
-
+        this._triggered = false;
+        this._targetPos = new THREE.Vector3( );
+        this._thisPos = new THREE.Vector3( );
         console.info("A-Frame Proximity Sensor.");
-        console.log("Detecting proximity (distance threshold: ", this.data.distance, ") between ", this.el, " and ", this.data.target);
+    },
+    /**
+     * Called when component is attached and when component data changes.
+     * Generally modifies the entity based on the data.
+     */
+    update: function (oldData) {
+        this._triggered = false;
+        this._target = this.data.target;
+        console.log("Detecting proximity (distance threshold: ",
+            this.data.distance, ") between ", this.el, " and ", this.data.target);
     },
     tick: function() {
-        //var target = this.el.sceneEl.querySelector(this.data.target);
-        let targetPos = this._target.object3D.position;
-        //console.log(targetPos);
-        let thisPos = this.el.object3D.position;
-        if (!this._triggered && thisPos.distanceTo(targetPos) < this.data.distance) {
+
+        this._targetPos = this.getWorldPosition(this._target.object3D, this._targetPos);
+        this._thisPos = this.getWorldPosition(this.el.object3D, this._thisPos);
+
+        if (!this._triggered && this._thisPos.distanceTo(this._targetPos) < this.data.distance) {
             this._triggered = true;
             console.debug('Emitting "proximityenter" event');
             this.el.emit('proximityenter');
-        } else if (this._triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {
+        } else if (this._triggered && this._thisPos.distanceTo(this._targetPos) >= this.data.distance) {
             this._triggered = false;
             console.debug('Emitting "proximityexit" event');
             this.el.emit('proximityexit');
 
         }
     },
-    /**
-     * Called when component is attached and when component data changes.
-     * Generally modifies the entity based on the data.
-     */
-    update: function (oldData) { },
+
 
     /**
      * Called when a component is removed (e.g., via removeAttribute).
@@ -69,5 +72,11 @@ AFRAME.registerComponent('proximity-sensor', {
      * Called when entity resumes.
      * Use to continue or add any dynamic or background behavior such as events.
      */
-    play: function () { }
+    play: function () { },
+
+    getWorldPosition: function(object3D, vec3) {
+        object3D.updateWorldMatrix(true);
+        vec3.setFromMatrixPosition(object3D.matrixWorld);
+        return vec3;
+    }
 });
