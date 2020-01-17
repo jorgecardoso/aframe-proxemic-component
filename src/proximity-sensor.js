@@ -5,7 +5,7 @@
 AFRAME.registerComponent('proximity-sensor', {
     schema: {
         distance: {type:'number', default: 1, min: 0},
-        target: {type:'selector', default: 'a-camera'}
+        target: {type:'selector', default: '[camera]'}
         },
 
     /**
@@ -21,6 +21,8 @@ AFRAME.registerComponent('proximity-sensor', {
         this.el.sceneEl.addBehavior(this);
         this._target = this.data.target;
 
+        //console.log(this.el.sceneEl.camera);
+
         console.info("A-Frame Proximity Sensor.");
         console.log("Detecting proximity (distance threshold: ", this.data.distance, ") between ", this.el, " and ", this.data.target);
     },
@@ -31,12 +33,12 @@ AFRAME.registerComponent('proximity-sensor', {
         let thisPos = this.el.object3D.position;
         if (!this._triggered && thisPos.distanceTo(targetPos) < this.data.distance) {
             this._triggered = true;
-            console.info('Emitting "enter" event');
-            this.el.emit('enter');
+            console.debug('Emitting "proximityenter" event');
+            this.el.emit('proximityenter');
         } else if (this._triggered && thisPos.distanceTo(targetPos) >= this.data.distance) {
             this._triggered = false;
-            console.info('Emitting "exit" event');
-            this.el.emit('exit');
+            console.debug('Emitting "proximityexit" event');
+            this.el.emit('proximityexit');
 
         }
     },
