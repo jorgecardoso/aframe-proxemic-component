@@ -15,14 +15,14 @@
            radius="0.25" id="one" side="both" color="green" position="-2 1.6 -4"
            animation="property:position; from: -2 1.6 -4; to: 2 1.6 -4; dur: 5000; dir: alternate; loop: true"
            event-set__proximityenter="material.color: red"
-           event-set__proximityexit="material.color: green";
+           event-set__proximityexit="material.color: green"
     ></a-sphere>
 
     <a-box proximity-sensor="target:#one; distance: 2"
            width="0.5" height="0.5" depth="0.5" id="two" side="both" color="green" position="2 1.6 -4"
            animation="property:position; from: 2 1.6 -4; to: -2 1.6 -4; dur: 5000; dir: alternate; loop: true"
            event-set__proximityenter="material.color:blue"
-           event-set__proximityexit="material.color: green";
+           event-set__proximityexit="material.color: green"
     ></a-box>
 
 </a-scene>

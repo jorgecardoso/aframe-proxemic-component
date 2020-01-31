@@ -103,7 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/* global AFRAME */\nif (typeof AFRAME === 'undefined') {\n  throw new Error('Component attempted to register before AFRAME was available.');\n}\n\nconsole.log('A-Frame Proxemic Components Version: 0.0.13 (Date 2020-01-17, Commit #00a58bf)');\n\n__webpack_require__(/*! ./src/proximity-sensor.js */ \"./src/proximity-sensor.js\");\n\n__webpack_require__(/*! ./src/compass-sensor.js */ \"./src/compass-sensor.js\");\n\n//# sourceURL=webpack:///./index.js?");
+eval("/* global AFRAME */\nif (typeof AFRAME === 'undefined') {\n  throw new Error('Component attempted to register before AFRAME was available.');\n}\n\nconsole.log('A-Frame Proxemic Components Version: 0.0.14 (Date 2020-01-31, Commit #cee2666)');\n\n__webpack_require__(/*! ./src/proximity-sensor.js */ \"./src/proximity-sensor.js\");\n\n__webpack_require__(/*! ./src/compass-sensor.js */ \"./src/compass-sensor.js\");\n\n//# sourceURL=webpack:///./index.js?");
 
 /***/ }),
 
