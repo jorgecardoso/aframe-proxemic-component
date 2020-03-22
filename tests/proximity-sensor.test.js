@@ -90,6 +90,7 @@ suite('proximity-sensor component', function () {
       component.el.setAttribute("position", "0 1.6 -3");
       component.tick(1, 1);
     });
+
   });
 
   suite('exit event', function () {

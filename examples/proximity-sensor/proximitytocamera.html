@@ -10,13 +10,14 @@
 <body>
 
 <a-scene environment="preset: forest">
-
+    
     <a-box proximity-sensor="distance:1"
            width="0.5" height="0.5" depth="0.5" id="one" side="both" color="red" position="0 1.6 -4"
            animation="property:position; from: 0 1.6 -4; to: 0 1.6 -0.5; dur: 3000; dir: alternate; loop: true"
            event-set__proximityenter="material.color:blue"
            event-set__proximityexit="material.color: red";
     ></a-box>
+
 
 
 </a-scene>

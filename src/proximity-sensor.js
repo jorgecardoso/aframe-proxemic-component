@@ -34,15 +34,22 @@ AFRAME.registerComponent('proximity-sensor', {
             this.data.distance, ") between ", this.el, " and ", this.data.target);
     },
     tick: function() {
-
+        let isVisible = true;
+        let ent = this.el;
+        //console.log(this.el.sceneEl);
+        while (ent != this.el.sceneEl) {
+            if (ent.object3D.visible === false) isVisible = false;
+            ent = ent.parentEl;
+            //console.log(1, ent);
+        }
         this._targetPos = this.getWorldPosition(this._target.object3D, this._targetPos);
         this._thisPos = this.getWorldPosition(this.el.object3D, this._thisPos);
 
-        if (!this._triggered && this._thisPos.distanceTo(this._targetPos) < this.data.distance) {
+        if (isVisible && !this._triggered && this._thisPos.distanceTo(this._targetPos) < this.data.distance) {
             this._triggered = true;
             console.debug('Emitting "proximityenter" event');
             this.el.emit('proximityenter');
-        } else if (this._triggered && this._thisPos.distanceTo(this._targetPos) >= this.data.distance) {
+        } else if (isVisible && this._triggered && this._thisPos.distanceTo(this._targetPos) >= this.data.distance) {
             this._triggered = false;
             console.debug('Emitting "proximityexit" event');
             this.el.emit('proximityexit');
