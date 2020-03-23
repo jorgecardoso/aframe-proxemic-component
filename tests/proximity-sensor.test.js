@@ -12,16 +12,13 @@ suite('proximity-sensor component', function () {
 
   setup(function (done) {
     el = entityFactory();
-    abox = document.createElement("a-box");
-    abox.setAttribute("position", "0 1.6 -3");
-    target = document.createElement("a-entity");
-    abox.appendChild(target);
-    el.sceneEl.appendChild(abox);
 
     el.addEventListener('componentinitialized', function (evt) {
       if (evt.detail.name !== 'proximity-sensor') { return; }
       component = el.components['proximity-sensor'];
       camera = document.querySelector("[camera]");
+      abox = document.querySelector("a-box");
+      target = abox.querySelector("a-entity");
       done();
     });
     el.setAttribute('proximity-sensor', {});
@@ -34,6 +31,10 @@ suite('proximity-sensor component', function () {
 
     test('default distance', function () {
       assert.equal(component.data.distance, 1);
+    });
+
+    test('default events on hidden entities', function() {
+      assert.equal(component.data.hidden, false);
     });
 
     test('updates target', function () {
@@ -59,6 +60,8 @@ suite('proximity-sensor component', function () {
       assert.equal(component.getWorldPosition(target.object3D, component._targetPos).y, 1.6);
       assert.equal(component.getWorldPosition(target.object3D, component._targetPos).z, -3);
     });
+
+
   });
 
   suite('enter event on camera', function () {
@@ -124,5 +127,54 @@ suite('proximity-sensor component', function () {
       component.el.setAttribute("position", camera.getAttribute("position"));
       component.tick(1, 1);
     });
+  });
+
+  suite('visibility defaults', function () {
+    test('does not emits enter event on invisible entity', function (done) {
+
+      component.el.setAttribute("visible", false);
+      component.el.addEventListener("proximityenter", function() {
+        assert.fail("Triggered proximity event");
+      });
+      component.el.setAttribute("position", camera.getAttribute("position"));
+      component.tick(1, 1);
+      this.timeout(1000);
+      done();
+    });
+
+    test('does not emits enter event on invisible parent entity', function (done) {
+      let sensorParent = document.querySelector("a-entity");
+      sensorParent.setAttribute("visible", false);
+      component.el.addEventListener("proximityenter", function() {
+        assert.fail("Triggered proximity event");
+      });
+      component.el.setAttribute("position", camera.getAttribute("position"));
+      component.tick(1, 1);
+      this.timeout(1000);
+      done();
+    });
+  });
+
+  suite('visibility', function () {
+    test('emits enter event on invisible entity', function (done) {
+      el.setAttribute('proximity-sensor', "hidden: true");
+      component.el.setAttribute("visible", false);
+      component.el.addEventListener("proximityenter", function() {
+        done();
+      });
+      component.el.setAttribute("position", camera.getAttribute("position"));
+      component.tick(1, 1);
+    });
+    test('emits enter event on invisible parent entity', function (done) {
+      el.setAttribute('proximity-sensor', "hidden: true");
+      let sensorParent = document.querySelector("a-entity");
+      sensorParent.setAttribute("visible", false);
+      component.el.addEventListener("proximityenter", function() {
+        done();
+      });
+      component.el.setAttribute("position", camera.getAttribute("position"));
+      component.tick(1, 1);
+    });
+
   });
 });

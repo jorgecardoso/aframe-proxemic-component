@@ -5,7 +5,8 @@
 AFRAME.registerComponent('proximity-sensor', {
     schema: {
         distance: {type:'number', default: 1, min: 0},
-        target: {type:'selector', default: '[camera]'}
+        target: {type:'selector', default: '[camera]'},
+        hidden: {type:'boolean', default: false}
         },
 
     /**
@@ -35,13 +36,16 @@ AFRAME.registerComponent('proximity-sensor', {
     },
     tick: function() {
         let isVisible = true;
-        let ent = this.el;
-        //console.log(this.el.sceneEl);
-        while (ent != this.el.sceneEl) {
-            if (ent.object3D.visible === false) isVisible = false;
-            ent = ent.parentEl;
-            //console.log(1, ent);
+        // Honor the hidden flag so that events are not triggered on not visible entities
+        if (this.data.hidden === false) {
+            let ent = this.el;
+            //console.log(this.el.sceneEl);
+            while (ent != this.el.sceneEl) {
+                if (ent.object3D.visible === false) isVisible = false;
+                ent = ent.parentEl;
+            }
         }
+
         this._targetPos = this.getWorldPosition(this._target.object3D, this._targetPos);
         this._thisPos = this.getWorldPosition(this.el.object3D, this._thisPos);
 

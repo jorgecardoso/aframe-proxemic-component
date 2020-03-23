@@ -13,6 +13,7 @@ For [A-Frame](https://aframe.io).
 | -------- | ----------- | ------------- |
 | distance |  Distance, in meters, to the target object which will trigger the sensor.          |     1          |
 | target | Selector to identify the target object. By default the proximity sensor will trigger in response to the camera object. | [camera] |
+| hidden | Whether to trigger events on hidden entities | false |
 
 #### Events
 | Event | Description | 

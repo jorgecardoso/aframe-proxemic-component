@@ -7,13 +7,31 @@
  * @returns {object} An `<a-entity>` element.
  */
 module.exports.entityFactory = function (opts) {
+  /*
+  * a-scene
+  *    |- a-assets
+  *    |- a-entity
+  *    |     |- a-entity proximity-sensor
+  *    |- a-box
+  *        |- a-entity (target)
+  * */
+
   var scene = document.createElement('a-scene');
+  let entity = document.createElement('a-entity');
   var assets = document.createElement('a-assets');
-  var entity = document.createElement('a-entity');
-  var camera = document.createElement('a-camera');
+  var sensor = document.createElement('a-entity');
+  //var camera = document.createElement('a-camera');
+  let abox = document.createElement("a-box");
+  let target = document.createElement("a-entity");
   scene.appendChild(assets);
   scene.appendChild(entity);
+  scene.appendChild(abox);
+
+  entity.appendChild(sensor);
  // scene.appendChild(camera);
+  abox.setAttribute("position", "0 1.6 -3");
+  abox.appendChild(target);
+
 
   opts = opts || {};
 
@@ -24,7 +42,7 @@ module.exports.entityFactory = function (opts) {
   }
 
   document.body.appendChild(scene);
-  return entity;
+  return sensor;
 };
 
 /**
