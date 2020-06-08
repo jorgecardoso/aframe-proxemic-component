@@ -16,7 +16,9 @@ suite('proximity-sensor component', function () {
     el.addEventListener('componentinitialized', function (evt) {
       if (evt.detail.name !== 'proximity-sensor') { return; }
       component = el.components['proximity-sensor'];
-      camera = document.querySelector("[camera]");
+      camera = document.querySelector("[camera],a-camera");
+      console.log("cam: ", camera);
+
       abox = document.querySelector("a-box");
       target = abox.querySelector("a-entity");
       done();

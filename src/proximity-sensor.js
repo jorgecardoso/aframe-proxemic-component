@@ -5,7 +5,7 @@
 AFRAME.registerComponent('proximity-sensor', {
     schema: {
         distance: {type:'number', default: 1, min: 0},
-        target: {type:'selector', default: '[camera]'},
+        target: {type:'selector', default: '[camera],a-camera'},
         hidden: {type:'boolean', default: false}
         },
 
