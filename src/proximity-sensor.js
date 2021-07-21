@@ -12,17 +12,36 @@ AFRAME.registerComponent('proximity-sensor', {
     /**
      * Set if component needs multiple instancing.
      */
-    multiple: false,
+    multiple: true,
 
     /**
      * Called once when component is attached. Generally for initial setup.
      */
     init: function () {
+        let _this = this;
         this.el.sceneEl.addBehavior(this);
         this._triggered = false;
         this._targetPos = new THREE.Vector3( );
         this._thisPos = new THREE.Vector3( );
         console.info("A-Frame Proximity Sensor.");
+
+        let scene = this.el.sceneEl;
+        this._hasStats = false;
+        if (scene.hasLoaded) {
+            run();
+        } else {
+            scene.addEventListener('loaded', run);
+        }
+
+        function run () {
+            console.log(scene.hasAttribute('stats'))
+            if (scene.hasAttribute('stats')) {
+                _this._hasStats = true;
+
+                // this._statsPanel = document.querySelector
+            }
+        }
+
     },
     /**
      * Called when component is attached and when component data changes.
@@ -35,6 +54,31 @@ AFRAME.registerComponent('proximity-sensor', {
             this.data.distance, ") between ", this.el, " and ", this.data.target);
     },
     tick: function() {
+        if (this._hasStats) {
+            if (!this._statsPanel) {
+                this._statsPanel = document.querySelector(".rs-base");
+                let statsPanelContainer = this._statsPanel.querySelector(".rs-container");
+
+                let title = document.createElement("h1")
+                title.innerText = "Proxemics";
+                statsPanelContainer.appendChild(title);
+
+                let container = document.createElement("div");
+                container.classList.add("rs-group");
+                let counterBasePosition = document.createElement("div");
+                counterBasePosition.classList.add("rs-counter-base");
+                counterBasePosition.innerHTML = '<span class="rs-counter-id">Distance (' + (this.el.id?this.el.id:'') +') </span>';
+                this._containerPosition = document.createElement("div");
+                this._containerPosition.classList.add("rs-counter-value");
+                this._containerPosition.style = "width: 200px";
+                counterBasePosition.appendChild(this._containerPosition);
+                container.appendChild(counterBasePosition);
+
+                statsPanelContainer.appendChild(container);
+                console.log(this._statsPanel)
+            }
+        }
+
         let isVisible = true;
         // Honor the hidden flag so that events are not triggered on not visible entities
         if (this.data.hidden === false) {
@@ -49,14 +93,17 @@ AFRAME.registerComponent('proximity-sensor', {
         this._targetPos = this.getWorldPosition(this._target.object3D, this._targetPos);
         this._thisPos = this.getWorldPosition(this.el.object3D, this._thisPos);
 
+        let d = this._thisPos.distanceTo(this._targetPos);
+        this._containerPosition.innerText = `${d}`
+
         if (isVisible && !this._triggered && this._thisPos.distanceTo(this._targetPos) < this.data.distance) {
             this._triggered = true;
             console.debug('Emitting "proximityenter" event');
-            this.el.emit('proximityenter');
+            this.el.emit('proximityenter', {componentId: this.id});
         } else if (isVisible && this._triggered && this._thisPos.distanceTo(this._targetPos) >= this.data.distance) {
             this._triggered = false;
             console.debug('Emitting "proximityexit" event');
-            this.el.emit('proximityexit');
+            this.el.emit('proximityexit', {componentId: this.id});
 
         }
     },

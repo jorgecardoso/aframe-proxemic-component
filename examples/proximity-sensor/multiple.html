@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>A-Frame Proxemics - Distance Sensor - Multiple</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="../../dist/aframe-proxemic-component.js"></script>
+</head>
+<body>
+
+<a-scene environment="preset: forest" stats>
+    <a-sphere proximity-sensor__dist1="target:#two; distance: 1"
+              proximity-sensor__dist2="target:#two; distance: 2"
+           radius="0.25" id="one" side="both" color="green" position="-2 1.6 -4"
+           animation="property:position; from: -2 1.6 -4; to: 2 1.6 -4; dur: 5000; dir: alternate; loop: true"
+
+    ></a-sphere>
+
+    <a-box
+           width="0.5" height="0.5" depth="0.5" id="two" side="both" color="green" position="2 1.6 -4"
+
+    ></a-box>
+
+</a-scene>
+
+<script>
+
+    document.querySelector("a-sphere").addEventListener("proximityenter", function(evt){
+        if (evt.detail.componentId === "dist1" ) {
+            console.log("color1")
+            this.setAttribute("material", "color", "red")
+        } else if (evt.detail.componentId === "dist2" ) {
+            console.log("color2")
+            this.setAttribute("material", "color", "orange")
+        }
+    });
+
+    document.querySelector("a-sphere").addEventListener("proximityexit", function(evt){
+        if (evt.detail.componentId === "dist2" ) {
+            console.log("color3")
+            this.setAttribute("material", "color", "green")
+        } else if (evt.detail.componentId === "dist1" ) {
+            console.log("color2")
+            this.setAttribute("material", "color", "orange")
+        }
+    });
+</script>
+
+</body>
+</html>
+
