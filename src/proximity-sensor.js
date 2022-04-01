@@ -94,7 +94,10 @@ AFRAME.registerComponent('proximity-sensor', {
         this._thisPos = this.getWorldPosition(this.el.object3D, this._thisPos);
 
         let d = this._thisPos.distanceTo(this._targetPos);
-        this._containerPosition.innerText = `${d}`
+        if (this._hasStats) {
+            this._containerPosition.innerText = `${d}`
+        }
+
 
         if (isVisible && !this._triggered && this._thisPos.distanceTo(this._targetPos) < this.data.distance) {
             this._triggered = true;
